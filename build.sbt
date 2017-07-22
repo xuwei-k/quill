@@ -10,11 +10,11 @@ lazy val `quill` =
     .dependsOn(
       `quill-core-jvm`, `quill-core-js`, `quill-sql-jvm`, `quill-sql-js`,
       `quill-jdbc`, `quill-finagle-mysql`, `quill-finagle-postgres`, `quill-async`,
-      `quill-async-mysql`, `quill-async-postgres`, `quill-cassandra`
+      `quill-async-mysql`, `quill-async-postgres`, `quill-ndbc`, `quill-cassandra`
     ).aggregate(
       `quill-core-jvm`, `quill-core-js`, `quill-sql-jvm`, `quill-sql-js`,
       `quill-jdbc`, `quill-finagle-mysql`, `quill-finagle-postgres`, `quill-async`,
-      `quill-async-mysql`, `quill-async-postgres`, `quill-cassandra`
+      `quill-async-mysql`, `quill-async-postgres`, `quill-ndbc`, `quill-cassandra`
     )
 
 lazy val superPure = new org.scalajs.sbtplugin.cross.CrossType {
@@ -134,6 +134,18 @@ lazy val `quill-async-postgres` =
     )
     .dependsOn(`quill-async` % "compile->compile;test->test")
 
+lazy val `quill-ndbc` =
+  (project in file("quill-ndbc"))
+    .settings(commonSettings: _*)
+    .settings(mimaSettings: _*)
+    .settings(
+      fork in Test := true,
+      libraryDependencies ++= Seq(
+        "io.trane" % "ndbc-api" % "0.0.1"
+      )
+    )
+    .dependsOn(`quill-sql-jvm` % "compile->compile;test->test")
+
 lazy val `quill-cassandra` =
   (project in file("quill-cassandra"))
     .settings(commonSettings: _*)
@@ -223,7 +235,7 @@ def updateWebsiteTag =
 
 lazy val commonSettings = ReleasePlugin.extraReleaseCommands ++ Seq(
   organization := "io.getquill",
-  scalaVersion := "2.11.11",
+  scalaVersion := "2.12.2",
   crossScalaVersions := Seq("2.11.11","2.12.2"),
   libraryDependencies ++= Seq(
     "org.scalamacros" %% "resetallattrs"  % "1.0.0",
