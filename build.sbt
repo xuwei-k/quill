@@ -240,6 +240,7 @@ lazy val commonSettings = ReleasePlugin.extraReleaseCommands ++ Seq(
   organization := "io.getquill",
   scalaVersion := "2.12.2",
   crossScalaVersions := Seq("2.11.11","2.12.2"),
+  resolvers += Resolver.sonatypeRepo("snapshots"),
   libraryDependencies ++= Seq(
     "org.scalamacros" %% "resetallattrs"  % "1.0.0",
     "org.scalatest"   %%% "scalatest"     % "3.0.3"     % Test,
